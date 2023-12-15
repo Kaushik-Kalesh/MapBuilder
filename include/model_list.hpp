@@ -15,7 +15,7 @@
 
 class ModelList {
 protected:
-    const char* jsonPath = "properties.json";
+    std::string jsonPath = "";
     nlohmann::json properties;
 
     std::unordered_map<std::string, Model*> modelList;
@@ -23,15 +23,15 @@ protected:
 
     bool isLoaded = false;
 
-    Model* get(std::string id);
+    Model* get_model(std::string id);
     std::string get_infocus_model_id(Camera3D camera);
     void load_properties();
     void store_properties();
 public:
-    ModelList();
+    ModelList(std::string mapName);
     ~ModelList();
     
-    void add(std::string id, Model* model);
+    void add_model(std::string id, Model* model);
     void set_material_texture(std::string id, int mapType, Texture2D *texture);
     void draw_all_models();
     void unload();

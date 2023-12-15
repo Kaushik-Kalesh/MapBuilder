@@ -2,11 +2,11 @@
 
 using json = nlohmann::json;
 
-ModelList::ModelList() {}
+ModelList::ModelList(std::string mapName) : jsonPath(mapName + ".json") {}
 
 ModelList::~ModelList() {}
 
-Model* ModelList::get(std::string id) {
+Model* ModelList::get_model(std::string id) {
     return (modelList.find(id) != modelList.end()) ? modelList[id] : nullptr;
 }
 
@@ -46,12 +46,12 @@ void ModelList::load_properties() {
         inFile >> properties;
         inFile.close();
     } else {
-        std::cerr << "Unable to open file: properties.json for reading." << std::endl;
+        std::cerr << "Unable to open file: " + jsonPath + " for reading." << std::endl;
     }
 
     for(auto &p : properties.items()) {
         std::vector<std::vector<float>> t = p.value();
-        get(p.key())->transform = {
+        get_model(p.key())->transform = {
             t[0][0], t[0][1], t[0][2], t[0][3],
             t[1][0], t[1][1], t[1][2], t[1][3],
             t[2][0], t[2][1], t[2][2], t[2][3],
@@ -62,7 +62,7 @@ void ModelList::load_properties() {
 
 void ModelList::store_properties() {
     for(auto p : modelList) {
-        Matrix t = get(p.first)->transform;
+        Matrix t = get_model(p.first)->transform;
         std::vector<std::vector<float>> transform = {
             {t.m0, t.m4, t.m8, t.m12},
             {t.m1, t.m5, t.m9, t.m13},
@@ -77,17 +77,17 @@ void ModelList::store_properties() {
         outFile << properties;
         outFile.close();
     } else {
-        std::cerr << "Unable to open file: properties.json for writing." << std::endl;
+        std::cerr << "Unable to open file: " + jsonPath + " for writing." << std::endl;
     }
 }
 
 
-void ModelList::add(std::string id, Model *model) {
+void ModelList::add_model(std::string id, Model *model) {
     modelList[id] = model;
 }
 
 void ModelList::set_material_texture(std::string id, int mapType, Texture2D *texture) {
-    SetMaterialTexture(&get(id)->materials[0], mapType, *texture);
+    SetMaterialTexture(&get_model(id)->materials[0], mapType, *texture);
     textureList[id] = texture;
 }
 
