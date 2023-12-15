@@ -2,12 +2,12 @@
 
 using json = nlohmann::json;
 
-ModelList::ModelList() {}
+ModelList::ModelList(std::string mapName) : jsonPath(mapName + ".json") {}
 
 ModelList::~ModelList() {}
 
-Model* ModelList::get(std::string id) {
-    return (modelList.find(id) != modelList.end()) ? modelList[id] : nullptr;
+Model* ModelList::get_model(std::string id) {
+    return (modelList.find(id) != modelList.end()) ? &modelList[id] : nullptr;
 }
 
 std::string ModelList::get_infocus_model_id(Camera3D camera) {
@@ -20,9 +20,9 @@ std::string ModelList::get_infocus_model_id(Camera3D camera) {
     for(auto p : modelList) {
         // Check ray collision against model meshes
         RayCollision meshHitInfo = { 0 };
-        for (int m = 0; m < p.second->meshCount; m++)
+        for (int m = 0; m < get_model(p.first)->meshCount; m++)
         {
-            meshHitInfo = GetRayCollisionMesh(ray, p.second->meshes[m], p.second->transform);
+            meshHitInfo = GetRayCollisionMesh(ray, get_model(p.first)->meshes[m], get_model(p.first)->transform);
             if (meshHitInfo.hit)
             {
                 if ((!collision.hit) || (collision.distance > meshHitInfo.distance)) collision = meshHitInfo;
@@ -46,12 +46,12 @@ void ModelList::load_properties() {
         inFile >> properties;
         inFile.close();
     } else {
-        std::cerr << "Unable to open file: properties.json for reading." << std::endl;
+        std::cerr << "Unable to open file: " + jsonPath + " for reading." << std::endl;
     }
 
     for(auto &p : properties.items()) {
         std::vector<std::vector<float>> t = p.value();
-        get(p.key())->transform = {
+        get_model(p.key())->transform = {
             t[0][0], t[0][1], t[0][2], t[0][3],
             t[1][0], t[1][1], t[1][2], t[1][3],
             t[2][0], t[2][1], t[2][2], t[2][3],
@@ -62,7 +62,7 @@ void ModelList::load_properties() {
 
 void ModelList::store_properties() {
     for(auto p : modelList) {
-        Matrix t = get(p.first)->transform;
+        Matrix t = get_model(p.first)->transform;
         std::vector<std::vector<float>> transform = {
             {t.m0, t.m4, t.m8, t.m12},
             {t.m1, t.m5, t.m9, t.m13},
@@ -77,17 +77,18 @@ void ModelList::store_properties() {
         outFile << properties;
         outFile.close();
     } else {
-        std::cerr << "Unable to open file: properties.json for writing." << std::endl;
+        std::cerr << "Unable to open file: " + jsonPath + " for writing." << std::endl;
     }
 }
 
 
-void ModelList::add(std::string id, Model *model) {
-    modelList[id] = model;
+void ModelList::add_model(std::string id, std::string path) {
+    modelList[id] = LoadModel(path.c_str());
 }
 
-void ModelList::set_material_texture(std::string id, int mapType, Texture2D *texture) {
-    SetMaterialTexture(&get(id)->materials[0], mapType, *texture);
+void ModelList::set_material_texture(std::string id, int mapType, std::string path) {
+    Texture2D texture = LoadTexture(path.c_str());
+    SetMaterialTexture(&get_model(id)->materials[0], mapType, texture);
     textureList[id] = texture;
 }
 
@@ -97,16 +98,16 @@ void ModelList::draw_all_models() {
         isLoaded = true;
     }
     for(auto p : modelList) {
-        DrawModel(*p.second, (Vector3) {0.0f, 0.0f, 0.0f}, 1.0f, WHITE);        // Draw models with the provided offests 
+        DrawModel(*get_model(p.first), (Vector3) {0.0f, 0.0f, 0.0f}, 1.0f, WHITE);        // Draw models with the provided offests 
     }
 }
 
 void ModelList::unload() {
     store_properties();
     for(auto p : modelList) {
-        UnloadModel(*p.second);
+        UnloadModel(*get_model(p.first));
     }
     for(auto p : textureList) {
-        UnloadTexture(*p.second);
+        UnloadTexture(p.second);
     }
 }

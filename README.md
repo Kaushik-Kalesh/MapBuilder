@@ -22,8 +22,6 @@ A sample client usage can be found at [client.cpp](MapBuilder/examples/src/clien
 #include <raylib.h>
 #include <mapbuilder.hpp>
 
-#include <iostream>
-
 int main() {
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -43,15 +41,15 @@ int main() {
     camera.projection = CAMERA_PERSPECTIVE; 
     
     // Initialize the Map Builder
-    MapBuilder mb = MapBuilder();
+    MapBuilder mb("map_1");
 
     Model turret_model = LoadModel("models/obj/turret.obj");
-    mb.add("turret", &turret_model);        // Add the model "turret" to the Map Builder
+    mb.add_model("turret", &turret_model);        // Add the model "turret" to the Map Builder
     Texture2D turret_texture = LoadTexture("models/obj/turret_diffuse.png");
     mb.set_material_texture("turret", MATERIAL_MAP_DIFFUSE, &turret_texture);
 
     Model house_model = LoadModel("models/obj/house.obj");
-    mb.add("house", &house_model);      // Add the model "house" to the Map Builder
+    mb.add_model("house", &house_model);      // Add the model "house" to the Map Builder
     Texture2D house_texture = LoadTexture("models/obj/house_diffuse.png");
     mb.set_material_texture("house", MATERIAL_MAP_DIFFUSE, &house_texture);
     //--------------------------------------------------------------------------------------
@@ -65,7 +63,7 @@ int main() {
         mb.update_map_builder();
     }  
 
-    mb.unload();
+    mb.unload(); // Unload all textures and models
 
     CloseWindow();
 
@@ -75,9 +73,10 @@ int main() {
 
 Run the following in GNU/Linux or MacOS to build and run the example:
 ```bash
-cd MapBuilder/examples
+cd examples
 make
 ```
+In Windows use the `mingw32-make` tool  
 
 Check [examples](MapBuilder/examples/) for more info
 

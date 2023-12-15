@@ -17,13 +17,13 @@ private:
 
     Camera3D camera = { 0 };
 
-    std::string inFocusModelId;
-    Model *inFocusModel;
-    float rotationAngle;
+    std::string inFocusModelId = "";
+    Model *inFocusModel = nullptr;
+    float rotationAngle = 0.0f;
     float propertyList[3][3];
 
     InputBox inputBoxList[3][3];
-    InputBox *inFocusInputBox;  
+    InputBox *inFocusInputBox = nullptr;  
 
 
     float text_size(int fontSize, int len);
@@ -43,7 +43,7 @@ public:
     KeyboardKey MENU_KEY = KEY_F1;
     KeyboardKey CAMERA_RESET_KEY = KEY_F2;
 
-    MapBuilder();
+    MapBuilder(std::string mapName);
     ~MapBuilder();
 
     void update_map_builder();

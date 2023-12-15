@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-MapBuilder::MapBuilder() : ModelList() {
+MapBuilder::MapBuilder(std::string mapName) : ModelList(mapName) {
     init_camera();
     DisableCursor();
 }
@@ -186,7 +186,7 @@ void MapBuilder::update_map_builder() {
         // Display menu
         if (!isMenuDisplayed && IsKeyPressed(MENU_KEY)) {
             inFocusModelId = get_infocus_model_id(camera);
-            inFocusModel = get(inFocusModelId);
+            inFocusModel = get_model(inFocusModelId);
             
             if(inFocusModel) {     
                 isMenuDisplayed = true;
