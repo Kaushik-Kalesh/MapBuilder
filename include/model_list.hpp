@@ -33,7 +33,7 @@ public:
     
     void add_model(std::string id, std::string path);
     void set_material_texture(std::string id, int mapType, std::string path);
-    void draw_all_models();
+    void draw_map();
     void unload();
 };
 

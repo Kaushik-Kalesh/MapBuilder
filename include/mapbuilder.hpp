@@ -4,6 +4,8 @@
 #include <raylib.h>
 #include <raymath.h>
 
+#include <iostream>
+
 #include "input_box.hpp"
 #include "model_list.hpp"
 

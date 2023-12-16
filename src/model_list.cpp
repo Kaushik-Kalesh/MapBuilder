@@ -92,7 +92,7 @@ void ModelList::set_material_texture(std::string id, int mapType, std::string pa
     textureList[id] = texture;
 }
 
-void ModelList::draw_all_models() {
+void ModelList::draw_map() {
     if(!isLoaded) {
         load_properties();
         isLoaded = true;

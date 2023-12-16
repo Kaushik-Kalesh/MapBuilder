@@ -1,7 +1,5 @@
 #include "mapbuilder.hpp"
 
-#include <iostream>
-
 MapBuilder::MapBuilder(std::string mapName) : ModelList(mapName) {
     init_camera();
     DisableCursor();
@@ -233,7 +231,7 @@ void MapBuilder::update_map_builder() {
             // Begin 3D scene
             BeginMode3D(camera);
 
-                draw_all_models();
+                draw_map();
                 DrawGrid(1000, 10.0f);
 
             EndMode3D();

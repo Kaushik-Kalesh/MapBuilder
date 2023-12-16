@@ -1,4 +1,4 @@
 .vscode
 build
 header.sh
-properties.json
+*.json
