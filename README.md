@@ -18,7 +18,7 @@ Clone this repo, and then install the following dependencies:
 - pkg-config (for [examples](examples/)) [guide](https://www.google.com/search?q=pkg-config+install&oq=pkg-config+install&sourceid=chrome&ie=UTF-8)
 
 ### Example
-A basic example is given below [client.cpp](examples/src/client.cpp), 
+A basic example is given below (can be found at [client.cpp](examples/src/client.cpp)), 
 ```cpp
 #include <raylib.h>
 #include <mapbuilder.hpp>
