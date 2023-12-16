@@ -113,7 +113,6 @@ int main() {
                     isMenuDisplayed = false;
                 }
             }
-            
             //----------------------------------------------------------------
 
             if(!isMenuDisplayed) {
