@@ -3,7 +3,7 @@
 This is a 3D Map Builder for games to be made using [raylib](https://www.raylib.com/) with C++
 
 ### About
-- The Map Builder provides a *menu* for allowing real-time changes of the properties of a 3D model in the world, essentially *building a map*    
+- The Map Builder provides a *menu* for allowing real-time changes of the *properties* (transform) of a 3D model in the world, essentially *building a map*    
 - The menu can be instatntiated by pressing the `MENU_KEY` which is `KEY_F1` by default, and `KEY_ENTER` saves the modified properties
 
 ![image](https://github.com/Kaushik-Kalesh/MapBuilder/assets/67593056/774b1b8e-36c2-44cc-914e-60976cc48741)  
