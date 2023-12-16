@@ -71,7 +71,7 @@ int main() {
 }
 ```
 
-Run the following in GNU/Linux or MacOS to build and run the example:
+Run the following commands (in GNU/Linux or MacOS) to build and run the example:
 ```bash
 cd examples
 make
