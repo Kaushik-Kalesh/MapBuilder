@@ -4,10 +4,12 @@
 // Helper functions
 //----------------------------------------------------------------
 void draw_map_1(MapBuilder *mb) {
+    DrawCube((Vector3){0.0f, 0.0f, 0.0f}, 200.0f, 0.0f, 200.0f, BLACK);
     mb->draw_map();
 }
 
 void draw_map_2(MapBuilder *mb) {
+    DrawCube((Vector3){0.0f, 0.0f, 0.0f}, 50.0f, 0.0f, 50.0f, BLACK);
     mb->draw_map();
 }
 
@@ -23,7 +25,7 @@ int main() {
     const int screenWidth = 1920;
     const int screenHeight = 1080;
 
-    InitWindow(screenWidth, screenHeight, "GAME");
+    InitWindow(screenWidth, screenHeight, "Map Builder Demo");
     SetWindowState(FLAG_WINDOW_MAXIMIZED);                               
     SetTargetFPS(60);
 
@@ -38,11 +40,15 @@ int main() {
     // Initialize map_1
     MapBuilder mb_1("map_1");
 
-    mb_1.add_model("turret", "models/obj/turret.obj");        // Add the model "turret" to the map_1
-    mb_1.set_material_texture("turret", MATERIAL_MAP_DIFFUSE, "models/obj/turret_diffuse.png");
-
-    mb_1.add_model("house", "models/obj/house.obj");        // Add the model "house" to the map_1
-    mb_1.set_material_texture("house", MATERIAL_MAP_DIFFUSE, "models/obj/house_diffuse.png");
+    mb_1.add_model("turret_%d", "models/obj/turret.obj", 4);        // Add the model "turret" to the map_1
+    mb_1.set_material_texture("turret_%d", MATERIAL_MAP_DIFFUSE, "models/obj/turret_diffuse.png", 4);
+    
+    mb_1.add_model("bridge_%d", "models/obj/bridge.obj", 12);        // Add the model "bridge" to the map_1
+    mb_1.set_material_texture("bridge_%d", MATERIAL_MAP_DIFFUSE, "models/obj/bridge_diffuse.png", 12);
+    
+    mb_1.add_model("castle", "models/obj/castle.obj");        // Add the model "castle" to the map_1
+    mb_1.set_material_texture("castle", MATERIAL_MAP_DIFFUSE, "models/obj/castle_diffuse.png");
+    
     
     // Initialize map_2
     MapBuilder mb_2("map_2");
@@ -59,61 +65,62 @@ int main() {
     while(!WindowShouldClose()) {
         // Ignore when running the Map Builder
         //----------------------------------------------------------------
-        UpdateCamera(&camera, CAMERA_FIRST_PERSON);        
+        // UpdateCamera(&camera, CAMERA_FIRST_PERSON);        
 
-        if(IsKeyPressed(KEY_F2)) {      // Reset the camera
-            camera.position = (Vector3){ 50.0f, 50.0f, 50.0f }; 
-            camera.target = (Vector3){0.0f, 0.0f, 0.0f};
-        }
+        // if(IsKeyPressed(KEY_F2)) {      // Reset the camera
+        //     camera.position = (Vector3){ 50.0f, 50.0f, 50.0f }; 
+        //     camera.target = (Vector3){0.0f, 0.0f, 0.0f};
+        // }
 
-        BeginDrawing();
+        // BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+        //     ClearBackground(RAYWHITE);
 
-            // Menu to switch between maps
-            //----------------------------------------------------------------
-            if(isMenuDisplayed) {
-                DrawRectangle(0, 0, screenWidth, screenHeight, Fade(SKYBLUE, 0.5f));
+        //     // Menu to switch between maps
+        //     //----------------------------------------------------------------
+        //     if(isMenuDisplayed) {
+        //         DrawRectangle(0, 0, screenWidth, screenHeight, Fade(SKYBLUE, 0.5f));
 
-                DrawText("Choose Map", screenWidth / 2 - 60, screenHeight / 2 - 75, 20, RED);
+        //         DrawText("Choose Map", screenWidth / 2 - 60, screenHeight / 2 - 75, 20, RED);
 
-                DrawRectangle(screenWidth / 2 - 50, screenHeight / 2 - 30, 100, 40, Fade(GREEN, 0.5f));
-                DrawText("map_1", screenWidth / 2 - 30, screenHeight / 2 - 20, 20, RED);
-                DrawRectangle(screenWidth / 2 - 50, screenHeight / 2 + 30, 100, 40, Fade(GREEN, 0.5f));
-                DrawText("map_2", screenWidth / 2 - 30, screenHeight / 2 + 40, 20, RED);
+        //         DrawRectangle(screenWidth / 2 - 50, screenHeight / 2 - 30, 100, 40, Fade(GREEN, 0.5f));
+        //         DrawText("map_1", screenWidth / 2 - 30, screenHeight / 2 - 20, 20, RED);
+        //         DrawRectangle(screenWidth / 2 - 50, screenHeight / 2 + 30, 100, 40, Fade(GREEN, 0.5f));
+        //         DrawText("map_2", screenWidth / 2 - 30, screenHeight / 2 + 40, 20, RED);
 
-                if(is_btn_in_focus(screenWidth / 2 - 50, screenHeight / 2 - 30, 100, 40) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                    map = "map_1";
-                    isMenuDisplayed = false;
-                }
-                if(is_btn_in_focus(screenWidth / 2 - 50, screenHeight / 2 + 30, 100, 40) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                    map = "map_2";
-                    isMenuDisplayed = false;
-                }
-            }
+        //         if(is_btn_in_focus(screenWidth / 2 - 50, screenHeight / 2 - 30, 100, 40) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        //             map = "map_1";
+        //             isMenuDisplayed = false;
+        //         }
+        //         if(is_btn_in_focus(screenWidth / 2 - 50, screenHeight / 2 + 30, 100, 40) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        //             map = "map_2";
+        //             isMenuDisplayed = false;
+        //         }
+        //     }
             
-            //----------------------------------------------------------------
+        //     //----------------------------------------------------------------
 
-            if(!isMenuDisplayed) {
-                BeginMode3D(camera);
+        //     if(!isMenuDisplayed) {
+        //         BeginMode3D(camera);
         
-                    if(map == "map_1") {
-                        draw_map_1(&mb_1);
-                    }
-                    else {
-                        draw_map_2(&mb_2);
-                    }
+        //             if(map == "map_1") {
+        //                 draw_map_1(&mb_1);
+        //             }
+        //             else {
+        //                 draw_map_2(&mb_2);
+        //             }
 
-                EndMode3D();
+        //         EndMode3D();
 
-                if(IsKeyPressed(KEY_F1)) {
-                    isMenuDisplayed = true;
-                }
-            }
+        //         if(IsKeyPressed(KEY_F1)) {
+        //             isMenuDisplayed = true;
+        //         }
+        //     }
 
-        EndDrawing();
+        // EndDrawing();
         //----------------------------------------------------------------
-        // mb_1.update_map_builder();
+        
+        mb_1.update_map_builder();
     }  
 
     // Unload all textures and models
