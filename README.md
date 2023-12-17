@@ -3,9 +3,13 @@
 This is a 3D Map Builder for games to be made using [raylib](https://www.raylib.com/) with C++
 
 ### About
+<<<<<<< HEAD
 
 - The Map Builder provides an interface to place **static** models in the world in their desired places (*map designing*), without having to **recompile** every time a change is made
 - In other words, the Map Builder provides a *menu* for allowing real-time changes of the properties of a 3D model in the world, essentially *building a map*
+=======
+- The Map Builder provides a *menu* for allowing real-time changes of the *properties* (transform) of a 3D model in the world, essentially *building a map*    
+>>>>>>> a5b3ed62e46806490e97dc4866ddc7414afdb408
 - The menu can be instatntiated by pressing the `MENU_KEY` which is `KEY_F1` by default, and `KEY_ENTER` saves the modified properties
 
 ![image](https://github.com/Kaushik-Kalesh/MapBuilder/assets/67593056/774b1b8e-36c2-44cc-914e-60976cc48741)  
@@ -22,9 +26,13 @@ Clone this repo, and then install the following dependencies:
 - pkg-config (for [examples](examples/)) [guide](https://www.google.com/search?q=pkg-config+install&oq=pkg-config+install&sourceid=chrome&ie=UTF-8)
 
 ### Example
+<<<<<<< HEAD
 
 A sample usage is shown below,
 
+=======
+A basic example is given below (can be found at [client.cpp](examples/src/client.cpp)), 
+>>>>>>> a5b3ed62e46806490e97dc4866ddc7414afdb408
 ```cpp
 #include <raylib.h>
 #include <mapbuilder.hpp>
