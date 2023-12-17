@@ -35,7 +35,7 @@ int main() {
     const int screenWidth = 1920;
     const int screenHeight = 1080;
 
-    InitWindow(screenWidth, screenHeight, "GAME");
+    InitWindow(screenWidth, screenHeight, "Map Builder Demo");
     SetWindowState(FLAG_WINDOW_MAXIMIZED);                               
     SetTargetFPS(60);
 
