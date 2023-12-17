@@ -49,15 +49,19 @@ void ModelList::load_properties() {
         std::cerr << "Unable to open file: " + jsonPath + " for reading." << std::endl;
     }
 
-    for(auto &p : properties.items()) {
-        std::vector<std::vector<float>> t = p.value();
-        get_model(p.key())->transform = {
-            t[0][0], t[0][1], t[0][2], t[0][3],
-            t[1][0], t[1][1], t[1][2], t[1][3],
-            t[2][0], t[2][1], t[2][2], t[2][3],
-            t[3][0], t[3][1], t[3][2], t[3][3]
-        };
+    for(auto &p : modelList) {
+        if(properties.contains(p.first)) {
+            std::vector<std::vector<float>> t = properties[p.first];
+            get_model(p.first)->transform = {
+                t[0][0], t[0][1], t[0][2], t[0][3],
+                t[1][0], t[1][1], t[1][2], t[1][3],
+                t[2][0], t[2][1], t[2][2], t[2][3],
+                t[3][0], t[3][1], t[3][2], t[3][3]
+            };
+        }
     }
+
+    store_properties(); 
 }
 
 void ModelList::store_properties() {
@@ -74,7 +78,7 @@ void ModelList::store_properties() {
 
     std::ofstream outFile(jsonPath);
     if (outFile.is_open()) {
-        outFile << properties;
+        outFile << std::setw(4) << properties << std::endl;
         outFile.close();
     } else {
         std::cerr << "Unable to open file: " + jsonPath + " for writing." << std::endl;
@@ -82,14 +86,37 @@ void ModelList::store_properties() {
 }
 
 
-void ModelList::add_model(std::string id, std::string path) {
-    modelList[id] = LoadModel(path.c_str());
+void ModelList::add_model(std::string id, std::string path, int copies) {
+    Model model = LoadModel(path.c_str());
+
+    const char* fmt = id.c_str();
+    for(int i = 1; i <= copies; i++) {
+        char buffer[id.size() + 1000];
+        std::sprintf(buffer, fmt, i);
+
+        modelList[buffer] = model;
+    }
+    if(copies == 0) {
+        modelList[id] = model;
+    }
 }
 
-void ModelList::set_material_texture(std::string id, int mapType, std::string path) {
+void ModelList::set_material_texture(std::string id, int mapType, std::string path, int copies) {
     Texture2D texture = LoadTexture(path.c_str());
-    SetMaterialTexture(&get_model(id)->materials[0], mapType, texture);
-    textureList[id] = texture;
+
+    const char* fmt = id.c_str();
+    for(int i = 1; i <= copies; i++) {
+        char buffer[id.size() + 1000];
+        std::sprintf(buffer, fmt, i);
+
+        SetMaterialTexture(&get_model(buffer)->materials[0], mapType, texture);
+        textureList[buffer] = texture;
+    }
+
+    if(copies == 0) {
+        SetMaterialTexture(&get_model(id)->materials[0], mapType, texture);
+        textureList[id] = texture;
+    }
 }
 
 void ModelList::draw_map() {

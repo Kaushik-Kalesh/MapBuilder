@@ -31,8 +31,8 @@ public:
     ModelList(std::string mapName);
     ~ModelList();
     
-    void add_model(std::string id, std::string path);
-    void set_material_texture(std::string id, int mapType, std::string path);
+    void add_model(std::string id, std::string path, int copies = 0);
+    void set_material_texture(std::string id, int mapType, std::string path, int copies = 0);
     void draw_map();
     void unload();
 };
