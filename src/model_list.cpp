@@ -87,25 +87,25 @@ void ModelList::store_properties() {
 
 
 void ModelList::add_model(std::string id, std::string path, int copies) {
-    Model model = LoadModel(path.c_str());
 
     const char* fmt = id.c_str();
     for(int i = 1; i <= copies; i++) {
+        Model model = LoadModel(path.c_str());
         char buffer[id.size() + 1000];
         std::sprintf(buffer, fmt, i);
 
         modelList[buffer] = model;
     }
     if(copies == 0) {
+        Model model = LoadModel(path.c_str());
         modelList[id] = model;
     }
 }
 
 void ModelList::set_material_texture(std::string id, int mapType, std::string path, int copies) {
-    Texture2D texture = LoadTexture(path.c_str());
-
     const char* fmt = id.c_str();
     for(int i = 1; i <= copies; i++) {
+        Texture2D texture = LoadTexture(path.c_str());
         char buffer[id.size() + 1000];
         std::sprintf(buffer, fmt, i);
 
@@ -114,6 +114,7 @@ void ModelList::set_material_texture(std::string id, int mapType, std::string pa
     }
 
     if(copies == 0) {
+        Texture2D texture = LoadTexture(path.c_str());
         SetMaterialTexture(&get_model(id)->materials[0], mapType, texture);
         textureList[id] = texture;
     }
